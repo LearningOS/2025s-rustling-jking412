@@ -5,7 +5,7 @@
 // - Traits
 //
 // An imaginary magical school has a new report card generation system written
-// in Rust! Currently the system only supports creating report cards where the
+// in Rust! Currently, the system only supports creating report cards where the
 // student's grade is represented numerically (e.g. 1.0 -> 5.5). However, the
 // school also issues alphabetical grades (A+ -> F-) and needs to be able to
 // print both types of report card!
@@ -16,7 +16,6 @@
 //
 // Execute `rustlings hint quiz3` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
 
 pub struct ReportCard {
     pub grade: f32,
@@ -28,6 +27,33 @@ impl ReportCard {
     pub fn print(&self) -> String {
         format!("{} ({}) - achieved a grade of {}",
             &self.student_name, &self.student_age, &self.grade)
+    }
+
+    pub fn print_alphabetic(&self) -> String{
+
+        let student_grade : String;
+
+        if self.grade >= 1.5 && self.grade < 2f32 {
+            student_grade = String::from("F-");
+        }else if self.grade >= 2f32 && self.grade < 2.5{
+            student_grade = String::from("F");
+        }else if self.grade >= 2.5 && self.grade < 3f32{
+            student_grade = String::from("E");
+        }else if self.grade >= 3f32 && self.grade < 3.5{
+            student_grade = String::from("D");
+        }else if self.grade >= 3.5 && self.grade < 4f32{
+            student_grade = String::from("C");
+        }else if self.grade >= 4f32 && self.grade < 4.5{
+            student_grade = String::from("B");
+        }else if self.grade >= 4.5 && self.grade < 5f32{
+            student_grade = String::from("A");
+        }else if self.grade >= 5f32 && self.grade <= 5.5{
+            student_grade = String::from("A+");
+        }
+
+
+        format!("{} ({}) - achieved a grade of A+",
+                &self.student_name, &self.student_age)
     }
 }
 
@@ -52,12 +78,12 @@ mod tests {
     fn generate_alphabetic_report_card() {
         // TODO: Make sure to change the grade here after you finish the exercise.
         let report_card = ReportCard {
-            grade: 2.1,
+            grade: 5.5,
             student_name: "Gary Plotter".to_string(),
             student_age: 11,
         };
         assert_eq!(
-            report_card.print(),
+            report_card.print_alphabetic(),
             "Gary Plotter (11) - achieved a grade of A+"
         );
     }
