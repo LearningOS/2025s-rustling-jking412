@@ -2,7 +2,6 @@
 	queue
 	This question requires you to use queues to implement the functionality of the stac
 */
-// I AM NOT DONE
 
 #[derive(Debug)]
 pub struct Queue<T> {
@@ -54,28 +53,68 @@ impl<T> Default for Queue<T> {
 
 pub struct myStack<T>
 {
-	//TODO
+	active: u8,
 	q1:Queue<T>,
 	q2:Queue<T>
 }
 impl<T> myStack<T> {
     pub fn new() -> Self {
+
         Self {
-			//TODO
+			active: 1,
 			q1:Queue::<T>::new(),
 			q2:Queue::<T>::new()
         }
     }
     pub fn push(&mut self, elem: T) {
         //TODO
+        match self.active {
+            1u8 => self.q1.enqueue(elem),
+            2u8 => self.q2.enqueue(elem),
+            _ => {}
+        }
     }
     pub fn pop(&mut self) -> Result<T, &str> {
         //TODO
-		Err("Stack is empty")
+        if self.is_empty(){
+            return Err("Stack is empty");
+        }
+
+        let activate_que;
+        let deactivate_que;
+
+        if self.active == 1u8{
+            activate_que = &mut self.q1;
+            deactivate_que = &mut self.q2;
+            self.active = 2u8;
+        }else{
+            activate_que = &mut self.q2;
+            deactivate_que = &mut self.q1;
+            self.active = 1u8;
+        }
+
+        let mut i = 0;
+        let len = activate_que.size();
+        while i < len - 1{
+
+            deactivate_que.enqueue(activate_que.dequeue().unwrap());
+
+            i += 1;
+        }
+
+        activate_que.dequeue()
     }
     pub fn is_empty(&self) -> bool {
 		//TODO
-        true
+        match self.active {
+            1u8 => {
+                self.q1.is_empty()
+            }
+            2u8 => {
+                self.q2.is_empty()
+            }
+            _ => {true}
+        }
     }
 }
 
